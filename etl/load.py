@@ -16,9 +16,11 @@ class Loader:
         with open(config_path, 'r', encoding='utf-8') as file:
             self.config = yaml.safe_load(file)
         destino = self.config['destino']
-        self.engine = create_engine(f"sqlite:///{destino['ruta']}")
+        self.engine = create_engine(f"sqlite:///{destino['ruta']}?charset=utf8")
     def cargar_tabla(self, df, nombre_tabla, if_exists='replace'):
         """Carga un DataFrame a la tabla destino"""
+        for col in df.select_dtypes(include=['object']).columns:
+            df[col] = df[col].str.encode('utf-8', errors='ignore').str.decode('utf-8')
         df.to_sql(nombre_tabla, self.engine, if_exists=if_exists, index=False)
         print(f"Cargados {len(df)} registros en {nombre_tabla}")
         return True

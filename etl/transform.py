@@ -12,8 +12,8 @@ class Transformer:
     def transformar_clientes(self, df):
         """Transformaciones para tabla clientes"""
         df_transform = df.copy()
-        df_transform['nombre'] = df_transform['nombre'].str.strip()
-        df_transform['ciudad'] = df_transform['ciudad'].str.strip()
+        df_transform['nombre'] = df_transform['nombre'].str.strip().str.encode('latin1').str.decode('utf-8')
+        df_transform['ciudad'] = df_transform['ciudad'].str.strip().str.encode('latin1').str.decode('utf-8')
         # Validación de fechas
         df_transform['fecha_registro'] = pd.to_datetime(df_transform['fecha_registro'])
         print(f"Clientes transformados: {len(df_transform)} registros")
@@ -22,8 +22,8 @@ class Transformer:
         """Transformaciones para tabla productos"""
         df_transform = df.copy()
         # Limpiar nombres y categorías
-        df_transform['nombre_producto'] = df_transform['nombre_producto'].str.strip()
-        df_transform['categoria'] = df_transform['categoria'].str.strip()
+        df_transform['nombre_producto'] = df_transform['nombre_producto'].str.strip().str.encode('latin1').str.decode('utf-8')
+        df_transform['categoria'] = df_transform['categoria'].str.strip().str.encode('latin1').str.decode('utf-8')
         # Validar precios positivos
         df_transform['precio'] = df_transform['precio'].abs()
         print(f"Productos transformados: {len(df_transform)} registros")
